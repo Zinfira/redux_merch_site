@@ -1,16 +1,22 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-function Item() {
-  const name = "Tony";
-  const name2 = "Chee";
+function Item(props) {
+  
   return (
     <React.Fragment>
-      <h3>3a</h3>
-      <h3>{name} and {name2}</h3>
-      <p><em>Firebase entries not saving!</em></p>
+      <p>Item name: {props.name}</p>
+      <p>Item description: {props.description}</p>
+      <p>Item quantity: {props.quantity}</p>
       <hr/>
     </React.Fragment>
   );
 }
 
-export default Item
+Item.propTypes = {
+  name:PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  quantity: PropTypes.number.isRequired
+};
+
+export default Item;
