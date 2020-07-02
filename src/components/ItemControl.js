@@ -2,7 +2,7 @@ import React from 'react';
 import NewItemForm from './NewItemForm';
 import ItemList from './ItemList';
 import ItemDetail from './ItemDetail';
-
+import EditItemForm from './EditItemForm';
 
 class ItemControl extends React.Component {
   constructor(props){
@@ -10,7 +10,8 @@ class ItemControl extends React.Component {
     this.state = { 
     formVisibleOnPage: false,
     masterItemList: [], 
-    selectedItem: null
+    selectedItem: null,
+    editing: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -19,13 +20,17 @@ handleClick = () => {
   if (this.state.selectedItem != null ){
     this.setState({
       formVisibleOnPage: false,
-      selectedItem: null
+      selectedItem: null,
+      editing:false
     });
   } else {
   this.setState(prevState => ({
     formVisibleOnPage: !prevState.formVisibleOnPage
   }));
  }
+}
+handleEditClick = () => {
+  this.setState({editing: true});
 }
 
 handleAddingNewItemToList = (newItem) => {
@@ -48,14 +53,35 @@ handleChangingSelectedItem = (id) => {
       selectedItem: null
     });
  }
+ handleEditingItemInList = (itemToEdit) => {
+  const editedMasterItemList = this.state.masterItemList
+    .filter(item => item.id !== this.state.selectedItem.id)
+    .concat(itemToEdit);
+  this.setState({
+      masterItemList: editedMasterItemList,
+      editing: false,
+      selectedItem: null
+    });
+}
+
 
 render(){
   let currentlyVisibleState = null; 
   let buttonText = null;
 
-  if (this.state.selectedItem != null) {
+
+  if (this.state.editing) {
+    currentlyVisibleState = <EditItemForm 
+    item = {this.state.selectedItem}
+    onEditItem = {this.handleEditingItemInList} /> 
+    buttonText = "Return to item List "
+  }
+  else if (this.state.selectedItem != null) {
     currentlyVisibleState = <ItemDetail 
-    item = {this.state.selectedItem} onClickingDelete = {this.handleDeletingItem} /> // passing prop of a selected item to ItemDetail.js
+    item = {this.state.selectedItem} 
+    onClickingDelete = {this.handleDeletingItem}
+    onClickingEdit = {this.handleEditClick} /> 
+    // passing prop of a selected item to ItemDetail.js
     buttonText = "Return to Item List"; 
   }
   else if (this.state.formVisibleOnPage) {
