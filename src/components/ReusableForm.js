@@ -1,14 +1,7 @@
-import React from 'react';
-import { v4 } from 'uuid';
+import React from "react";
 import PropTypes from "prop-types";
 
-function NewItemForm(props) {
-
-  function handleNewItemFormSubmission(event) {
-   event.preventDefault();
-
-   props.onNewItemCreation({name: event.target.name.value, description: event.target.description.value, quantity: event.target.quantity.value, id: v4()});
-  }
+function ReusableForm(props) {
   return (
     <React.Fragment>
     <form onSubmit={handleNewItemFormSubmission}>
@@ -29,13 +22,13 @@ function NewItemForm(props) {
       placeholder='quantity' />
       <br />
     <button type='submit'>Create!</button>
-    <br />
-  </form>
+    </form>
     </React.Fragment>
   );
 }
-NewItemForm.propTypes = {
-  onNewItemCreation: PropTypes.func
+ReusableForm.propTypes = {
+  formSubmissionHandler: PropTypes.func,
+  buttonText: PropTypes.string
 };
 
-export default NewItemForm;
+export default ReusableForm;

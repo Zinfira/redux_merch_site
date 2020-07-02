@@ -1,31 +1,27 @@
 import React from "react";
 import Item from "./Item";
+import PropTypes from "prop-types";
 
-const masterItemList = [
-  {
-    name:"Cool Hat",
-    description:"nice hoodie",
-    quantity:"2" 
-  },
-  {
-    name:"Sweet Sweater",
-    description:"soft sweater",
-    quantity:"5"
-  }
-];
-
-
-function ItemList() {
+function ItemList(props) {
   return (
     <React.Fragment>
-     {masterItemList.map((item,index) =>
-     <Item name = {item.name}
-      description={item.description}
-      quantity={item.quantity}
-      key={index}/>
+    <hr />
+     {props.itemList.map((item) => 
+      <Item 
+       whenItemClicked = { props.onItemSelection } 
+       name={item.name}
+       description={item.description}
+       quantity={item.quantity}
+       id={item.id}
+       key={item.id}/>
      )}
     </React.Fragment>
   );
 }
+
+ItemList.propTypes = {
+  itemList: PropTypes.array,
+  onItemSelection: PropTypes.func
+};
 
 export default ItemList;
