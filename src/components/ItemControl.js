@@ -21,7 +21,7 @@ handleClick = () => {
     this.setState({
       formVisibleOnPage: false,
       selectedItem: null,
-      editing:false
+      editing: false
     });
   } else {
   this.setState(prevState => ({
@@ -30,9 +30,12 @@ handleClick = () => {
  }
 }
 handleEditClick = () => {
+  console.log("handleEditClick reached!");
   this.setState({editing: true});
 }
 
+
+////////-----
 handleAddingNewItemToList = (newItem) => {
   const newMasterItemList = this.state.masterItemList.concat(newItem);
   this.setState({
