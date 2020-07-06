@@ -3,17 +3,17 @@ import NewItemForm from './NewItemForm';
 import ItemList from './ItemList';
 import ItemDetail from './ItemDetail';
 import EditItemForm from './EditItemForm';
+import { connect } from 'react-redux';
 
 class ItemControl extends React.Component {
   constructor(props){
     super(props);
+    console.log(props);
     this.state = { 
     formVisibleOnPage: false,
-    masterItemList: [], 
     selectedItem: null,
     editing: false
     };
-    this.handleClick = this.handleClick.bind(this);
   }
 
 handleClick = () => {
@@ -37,34 +37,49 @@ handleEditClick = () => {
 
 ////////-----
 handleAddingNewItemToList = (newItem) => {
-  const newMasterItemList = this.state.masterItemList.concat(newItem);
-  this.setState({
-    masterItemList: newMasterItemList,
-    formVisibleOnPage: false 
-  });
-} //newMasterItemList -> Array
+  const { dispatch } = this.props;
+  const { id, name, description, quantity } = newItem;
+  const action = {
+    type: 'ADD_ITEM',
+    id: id,
+    name: name,
+    description: description,
+    quantity: quantity,
+  }
+  dispatch(action);
+  this.setState({formVisibleOnPage: false});
+} 
 
 handleChangingSelectedItem = (id) => {
   const selectedItem = this.state.masterItemList.filter(item => item.id ===id)[0];
   this.setState({selectedItem: selectedItem});
 }  // update item, choosing one item only
 
- handleDeletingItem = (id) => {
-    const newMasterItemList = this.state.masterItemList.filter(item =>  item.id !== id);
-    this.setState({
-      masterItemList: newMasterItemList,
-      selectedItem: null
-    });
- }
+handleDeletingItem = (id) => {
+  const { dispatch } = this.props;
+  const action = {
+    type: 'DELETE_ITEM',
+    id: id
+  }
+  dispatch(action);
+  this.setState({selectedItem: null});
+}
+
  handleEditingItemInList = (itemToEdit) => {
-  const editedMasterItemList = this.state.masterItemList
-    .filter(item => item.id !== this.state.selectedItem.id)
-    .concat(itemToEdit);
+  const { dispatch } = this.props;
+  const { id, name, description, quantity } = itemToEdit;
+  const action = {
+    type: 'ADD_ITEM',
+    id: id,
+    name: name,
+    description: description,
+    quantity: quantity,
+  }
+  dispatch(action);
   this.setState({
-      masterItemList: editedMasterItemList,
-      editing: false,
-      selectedItem: null
-    });
+    editing: false,
+    selectedItem: null
+  });
 }
 
 
@@ -104,6 +119,9 @@ render(){
   }
 
 }
+
+ItemControl = connect()(ItemControl);
+
 export default ItemControl;
 
 
