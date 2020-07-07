@@ -6,21 +6,21 @@ function ItemList(props) {
   return (
     <React.Fragment>
     <hr />
-     {props.itemList.map((item) => 
-      <Item 
-       whenItemClicked = { props.onItemSelection } 
-       name={item.name}
-       description={item.description}
-       quantity={item.quantity}
-       id={item.id}
-       key={item.id}/>
-     )}
+     {Object.values(props.itemList).map((item) => {
+      return <Item 
+        whenItemClicked = { props.onItemSelection } 
+        name={item.name}
+        description={item.description}
+        quantity={item.quantity}
+        id={item.id}
+        key={item.id}/>
+      })}
     </React.Fragment>
   );
 }
 
 ItemList.propTypes = {
-  itemList: PropTypes.array,
+  itemList: PropTypes.object,
   onItemSelection: PropTypes.func
 };
 
